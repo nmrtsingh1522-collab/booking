@@ -1,4 +1,10 @@
 package com.java.booking.model;
 
-public class TouristResponse {
+public record TouristResponse(
+        Long id,
+        String name,
+        String email,
+        String phone,
+        String city
+) {
 }

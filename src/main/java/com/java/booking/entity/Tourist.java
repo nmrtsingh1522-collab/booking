@@ -2,10 +2,7 @@ package com.java.booking.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -15,6 +12,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Tourist {
 
     @Id
@@ -24,6 +22,8 @@ public class Tourist {
     private String fullName;
     private String email;
     private String passportNumber;
+    private String phoneNo;
+    private String city;
 
     @OneToMany(mappedBy = "tourist")
     @JsonManagedReference

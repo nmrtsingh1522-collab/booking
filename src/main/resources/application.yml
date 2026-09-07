@@ -21,6 +21,7 @@ management:
           - health
           - info
           - metrics
+          - env
 
   endpoint:
     health:

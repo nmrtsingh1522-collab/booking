@@ -4,6 +4,7 @@ import com.java.booking.entity.Booking;
 import com.java.booking.model.BookingUserDto;
 import com.java.booking.model.UserDto;
 import com.java.booking.repository.BookingRepository;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -15,6 +16,9 @@ public class BookingService {
 
     @Autowired
     private BookingRepository bookingRepository;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private RestTemplate restTemplate;
@@ -29,7 +33,7 @@ public class BookingService {
 
     public BookingUserDto getBookingById(Long bookingId) {
         Booking bookingObject = bookingRepository.findById(bookingId).get();
-        UserDto userDetails =  getUser(1L);
+        UserDto userDetails =  userService.getUser(1L);
         return BookingUserDto
                 .builder()
                 .bookingDetails(bookingObject)
@@ -38,8 +42,24 @@ public class BookingService {
 
     }
 
+    /*@CircuitBreaker(
+            name = "userService",
+            fallbackMethod = "getUserFallback"
+    )
     public UserDto getUser(Long userId) {
-        String url = "https://dummyjson.com/users/" + userId;
+        String url = "http://localhost:9999/users/" + userId;
         return restTemplate.getForObject(url, UserDto.class);
     }
+
+    public UserDto getUserFallback(Long userId, Throwable throwable) {
+        System.out.println("User service is Unavailable: "+ throwable.getMessage());
+
+        return UserDto
+                .builder()
+                .id(userId)
+                .firstName("Unknown")
+                .lastName("User")
+                .build();
+
+    }*/
 }
